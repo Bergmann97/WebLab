@@ -23,6 +23,13 @@ def giveDebugLog(app, msg: str):
         print(msg)
 
 
+def writeHTMLLog(log: str):
+    finalStr = f'<p>{log}</p>'
+    # write html to display the created elements
+    with open('templates/test.html', 'w') as file:
+        file.write(finalStr)
+
+
 def writeHTMLTable(header: list[str], table: list[list[str]], headline: str):
     '''
     creates an html table with a given headline based on a table with string
@@ -46,12 +53,17 @@ def writeHTMLTable(header: list[str], table: list[list[str]], headline: str):
     for line in table:
         tableStr += '  <tr>\n'
         for item in line:
-            tableStr += '    <td>' + item + '</td>\n'
+            if isinstance(item, list):
+                tableStr += '<td><ul>'
+                for i in item:
+                    tableStr += '<li>' + i + '</li>'
+                tableStr += '</ul></td>'
+            else:
+                tableStr += '    <td>' + item + '</td>\n'
         tableStr += '  </tr>\n'
 
     tableStr += '</table>'
     finalStr += tableStr
-    print(tableStr)
 
     finalStr += '</div>'
 

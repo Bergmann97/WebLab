@@ -1,6 +1,8 @@
 from firebasehelper import getDBCollectionAsDict, getDocFromDB, removeFromDB
 from firebasehelper import writeIntoDB
-from utils import writeHTMLTable
+from retrievePoliticians import retrieveWikidata
+from utils import giveDebugLog, writeHTMLLog, writeHTMLTable
+import json
 
 
 RETRIEVED_COLLECTION = 'retrieved'
@@ -12,7 +14,7 @@ def onRetrieveClick(app):
     prototype function to retrieve information from a given webpage using
     Google Custom Search
     '''
-    app.logger.debug('Retrieve Information from Webpage')
+    giveDebugLog(app, 'Retrieve Information from Webpage')
 
     finalStr: str = '<div id="log"><h4>Retrieving information from webpage ...</h4></div>'
     with open('templates/test.html', 'w') as file:
@@ -24,7 +26,7 @@ def onRetrieveClick(app):
 
 def onRetrieveTwitterClick(app):
     '''prototype function to retrieve twitter posts usign the twitter API'''
-    app.logger.debug('Retrieve Information from Twitter')
+    giveDebugLog(app, 'Retrieve Information from Twitter')
 
     finalStr: str = '<div id="log"><h4>Retrieving information from twitter ...</h4></div>'
     with open('templates/test.html', 'w') as file:
@@ -38,7 +40,9 @@ def onApproveClick(app):
     '''
     prototype function to handle the onClick to approve a single information
     '''
-    app.logger.debug('Approve Information')
+    giveDebugLog(app, 'Approve Information')
+
+    # TODO: change this --> only change value and update doc
 
     # id of document to approve
     id: str = '123'
@@ -79,7 +83,7 @@ def onListClick(app):
         'All Retrieved Information'
     )
 
-    app.logger.debug('List All')
+    giveDebugLog(app, 'List All')
 
 
 def onListApprovedClick(app):
@@ -102,4 +106,22 @@ def onListApprovedClick(app):
         'All Approved Information'
     )
 
-    app.logger.debug('List approved')
+    giveDebugLog(app, 'List approved')
+
+
+def onWikidataRetrievalClick(app):
+    error, retrievedData = retrieveWikidata(app, 'Q6279')
+
+    if not error:
+        head = ['property', 'value']
+        lines = []
+
+        for key in retrievedData.keys():
+            line = [key, retrievedData[key]]
+            lines.append(line)
+
+        writeHTMLTable(head, lines, 'Wikidata of Joe Biden')
+    else:
+        writeHTMLLog(error)
+
+    giveDebugLog(app, 'Retrieve all information from wikidata for Joe Biden')

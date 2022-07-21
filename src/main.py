@@ -3,7 +3,7 @@ import os
 from flask import Flask, request
 from flask import render_template
 
-from protoBtnClick import onRetrieveClick
+from protoBtnClick import onRetrieveClick, onWikidataRetrievalClick
 from protoBtnClick import onRetrieveTwitterClick
 from protoBtnClick import onApproveClick
 from protoBtnClick import onListClick
@@ -13,15 +13,15 @@ from protoBtnClick import onListApprovedClick
 app = Flask(__name__)
 
 
+def cleanLog():
+    with open('templates/test.html', 'w') as f:
+        f.write('<p>Waiting for log!</p>')
+
+
 @app.route('/', methods=['POST', 'GET'])
 def index():
-
-    # writeIntoDB(
-    #     'retrieved',
-    #     {'title': 'test', 'text': 'text', 'date': '22.12.1997'},
-    #     '123')
-
-    content: str = 'Nothing happend'
+    cleanLog()
+    content = "Nothing happend!"
     if request.method == 'POST':
         if request.form['protoBtn'] == '1':
             content = onRetrieveClick(app)
@@ -33,6 +33,8 @@ def index():
             content = onListClick(app)
         if request.form['protoBtn'] == '5':
             content = onListApprovedClick(app)
+        if request.form['protoBtn'] == '6':
+            content = onWikidataRetrievalClick(app)
 
     return render_template('index.html', content=content)
 
