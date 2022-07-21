@@ -1,0 +1,10 @@
+src/__pycache__
+src/.vscode
+.vscode
+src/informationextraction-service-account.json
+src/twitter-credentials.json
+src/google-credentials.json
+
+src/test.json
+src/*.json
+src/tmp
