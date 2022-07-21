@@ -1,0 +1,1 @@
+COLLECTION: str = 'politicians'

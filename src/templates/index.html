@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Information Extraction</title>
+    <meta
+      name="description"
+      content="An application to extract information from websites and twitter"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+
+    <script>
+      function includeHTML() {
+        var z, i, elmnt, file, xhttp;
+        /* Loop through a collection of all HTML elements: */
+        z = document.getElementsByTagName("*");
+        for (i = 0; i < z.length; i++) {
+          elmnt = z[i];
+          /*search for elements with a certain atrribute:*/
+          file = elmnt.getAttribute("my-include-html");
+          if (file) {
+            /* Make an HTTP request using the attribute value as the file name: */
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4) {
+                if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+                if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+                /* Remove the attribute, and call this function once more: */
+                elmnt.removeAttribute("my-include-html");
+                includeHTML();
+              }
+            }
+            xhttp.open("GET", file, true);
+            xhttp.send();
+            /* Exit the function: */
+            return;
+          }
+        }
+      }
+      </script>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrapper clearfix">
+        <div class="title">
+          <h1>Information Extraction</h1>
+          <h2>Extract information from different websites and Twitter!</h2>
+        </div>
+        <nav>
+          <ul>
+            <!-- TODO: add navigation to different sites -->
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper clearfix">
+        <h3>This prototype app supports the following options:</h3>
+        <div class="two-col-menu">
+          <form method="post">
+            <button type="submit" name="protoBtn" value="1" >Retrieve information from webpage</button>
+            <button type="submit" name="protoBtn" value="2" >Retrieve information from Twitter</button>
+            <button type="submit" name="protoBtn" value="3" >Approve information</button>
+            <button type="submit" name="protoBtn" value="4" >List all</button>
+            <button type="submit" name="protoBtn" value="5" >List approved</button>
+          </form>
+        </div>
+      </div>
+      <div class="wrapper clearfix">
+        <h3>Log of executed process:</h3>
+        <div my-include-html="test.html"></div>
+        <!-- {% if content %}
+        {{ content }}
+        {% else %}
+          {% if table %}
+
+          {% endif %}
+        {% endif %} -->
+      </div>
+    </main>
+    <footer>
+      <div class="foot-content wrapper">
+        This is an application built for the Web-Technologies Lab 12448 | SS 2022.  Max Bergmann B.Sc Computer Science
+      </div>
+    </footer>
+    <script>
+      includeHTML();
+    </script>
+  </body>
+</html>
