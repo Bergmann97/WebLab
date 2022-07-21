@@ -6,5 +6,4 @@ src/twitter-credentials.json
 src/google-credentials.json
 
 src/test.json
-src/*.json
 src/tmp
